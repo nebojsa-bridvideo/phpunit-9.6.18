@@ -285,6 +285,10 @@ class Command
             $this->arguments['testSuffixes'] = ['Test.php', '.phpt'];
         }
 
+        if(isset($argv['test'])) {
+            $this->arguments['test'] = $argv['test'];
+        }
+
         if (!isset($this->arguments['test']) && $arguments->hasArgument()) {
             $this->arguments['test'] = realpath($arguments->argument());
 

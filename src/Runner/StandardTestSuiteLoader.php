@@ -28,7 +28,7 @@ use ReflectionException;
  *
  * @deprecated see https://github.com/sebastianbergmann/phpunit/issues/4039
  */
-final class StandardTestSuiteLoader implements TestSuiteLoader
+class StandardTestSuiteLoader implements TestSuiteLoader
 {
     /**
      * @throws Exception

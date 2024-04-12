@@ -86,7 +86,7 @@ use SebastianBergmann\Timer\Timer;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TestRunner extends BaseTestRunner
+class TestRunner extends BaseTestRunner
 {
     public const SUCCESS_EXIT   = 0;
     public const FAILURE_EXIT   = 1;
@@ -291,15 +291,15 @@ final class TestRunner extends BaseTestRunner
         }
 
         if ($this->printer === null) {
-            if (isset($arguments['printer'])) {
-                if ($arguments['printer'] instanceof ResultPrinter) {
-                    $this->printer = $arguments['printer'];
-                } elseif (is_string($arguments['printer']) && class_exists($arguments['printer'], false)) {
+            if (isset($this->_params['printer'])) {
+                if ($this->_params['printer'] instanceof ResultPrinter) {
+                    $this->printer = $this->_params['printer'];
+                } elseif (is_string($this->_params['printer']) && class_exists($this->_params['printer'], false)) {
                     try {
-                        $reflector = new ReflectionClass($arguments['printer']);
+                        $reflector = new ReflectionClass($this->_params['printer']);
 
                         if ($reflector->implementsInterface(ResultPrinter::class)) {
-                            $this->printer = $this->createPrinter($arguments['printer'], $arguments);
+                            $this->printer = $this->createPrinter($this->_params['printer'], $this->_params);
                         }
 
                         // @codeCoverageIgnoreStart
@@ -311,6 +311,9 @@ final class TestRunner extends BaseTestRunner
                         );
                     }
                     // @codeCoverageIgnoreEnd
+                } else {
+                    $this->printer = $this->_params['printer'];
+
                 }
             } else {
                 $this->printer = $this->createPrinter(DefaultResultPrinter::class, $arguments);
