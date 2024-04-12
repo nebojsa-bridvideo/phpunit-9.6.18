@@ -285,8 +285,22 @@ class Command
             $this->arguments['testSuffixes'] = ['Test.php', '.phpt'];
         }
 
-        if(isset($argv['test'])) {
-            $this->arguments['test'] = $argv['test'];
+        if(isset($argv['test']) && !empty($argv['test'])) {
+            // Plugin tests
+            if(isset($argv['plugin']) && !empty($argv['plugin'])) {
+                $path = $argv['root_path'] . "/Plugin/". $argv['plugin'];
+            }
+            // Core tests
+            elseif(isset($argv['core']) && $argv['core'] == "true") {
+                $path = $argv['root_core_path'];
+            }
+            // App tests
+            else {
+                $path = $argv['root_path'];
+            }
+
+            // Test file with full path
+            $this->arguments['test'] = "/". trim($path, "/") ."/Test". $argv['test'];
         }
 
         if (!isset($this->arguments['test']) && $arguments->hasArgument()) {
